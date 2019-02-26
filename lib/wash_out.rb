@@ -20,19 +20,23 @@ end
 module ActionDispatch::Routing
   class Mapper
     # Adds the routes for a SOAP endpoint at +controller+.
-    def wash_out(controller_name, options={})
-      if @scope
-        scope_frame = @scope.respond_to?(:frame) ? @scope.frame : @scope
-        options.each{ |key, value|  scope_frame[key] = value }
+    def wash_out(controller_name, base_uri=nil)
+      current_scope = @scope
+      scope_frames = HashWithIndifferentAccess.new
+      base_uri ||= controller_name
+
+      while current_scope
+        scope_frame = (current_scope.respond_to?(:frame) ? current_scope.frame : current_scope) || HashWithIndifferentAccess.new
+        scope_frames = scope_frames.deep_merge(scope_frame)
+        current_scope = current_scope.parent
       end
 
-      controller_class_name = [scope_frame[:module], controller_name].compact.join("/").underscore
+      uri = [base_uri, scope_frames.dig(:options, :version), "ServiceBasic.svc"].compact.join("/")
+      controller_class_name = [scope_frames[:module], controller_name].compact.join("/").underscore
 
-      match "#{controller_name}/wsdl"   => "#{controller_name}#_generate_wsdl", :via => :get, :format => false,
-        :as => "#{controller_class_name}_wsdl"
-      match "#{controller_name}/action" => WashOut::Router.new(controller_class_name), :via => [:get, :post],
-        :defaults => { :controller => controller_class_name, :action => 'soap' }, :format => false,
-        :as => "#{controller_class_name}_soap"
+      match "#{uri}" => "#{controller_name}#_generate_wsdl", :via => :get, :format => false
+      match "#{uri}" => WashOut::Router.new(controller_class_name), :via => :post, :format => false,
+            :defaults => { :controller => controller_class_name, :action => 'soap' }
     end
   end
 end
