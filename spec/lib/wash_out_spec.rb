@@ -4,22 +4,22 @@ require 'spec_helper'
 
 SIMPLE_REQUEST_XML = <<-SIMPLE_REQUEST_XML_HEREDOC
 <?xml version="1.0" encoding="UTF-8"?>
-<env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+<env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
   <env:Body>
-    <tns:answer>
+    <ns1:answer>
       <value>42</value>
-    </tns:answer>
+    </ns1:answer>
   </env:Body>
 </env:Envelope>
 SIMPLE_REQUEST_XML_HEREDOC
 
 SIMPLE_RESPONSE_XML = <<-SIMPLE_RESPONSE_XML_HEREDOC
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false">
   <soap:Body>
-    <tns:answerResponse>
+    <ns1:answerResponse>
       <Value xsi:type="xsd:int">42</Value>
-    </tns:answerResponse>
+    </ns1:answerResponse>
   </soap:Body>
 </soap:Envelope>
 SIMPLE_RESPONSE_XML_HEREDOC
@@ -166,22 +166,22 @@ describe WashOut do
 
         request = <<-XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
           <env:Body>
-            <tns:answer>
+            <ns1:answer>
               <value>42</value>
-            </tns:answer>
+            </ns1:answer>
           </env:Body>
           </env:Envelope>
         XML
 
         expect(HTTPI.post("http://app/route/api/action", request).body).to eq <<-XML
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false">
   <soap:Body>
-    <tns:answerResponse>
+    <ns1:answerResponse>
       <Value xsi:type="xsd:int">42</Value>
-    </tns:answerResponse>
+    </ns1:answerResponse>
   </soap:Body>
 </soap:Envelope>
         XML
@@ -197,22 +197,22 @@ describe WashOut do
 
         request = <<-XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
           <env:Body>
-            <tns:whatever>
+            <ns1:whatever>
               <value>42</value>
-            </tns:whatever>
+            </ns1:whatever>
           </env:Body>
           </env:Envelope>
         XML
 
         expect(HTTPI.post("http://app/route/api/action", request).body).to eq <<-XML
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false">
   <soap:Body>
-    <tns:whateverResponse>
+    <ns1:whateverResponse>
       <Value xsi:type="xsd:int">42</Value>
-    </tns:whateverResponse>
+    </ns1:whateverResponse>
   </soap:Body>
 </soap:Envelope>
         XML
@@ -424,7 +424,7 @@ describe WashOut do
             :boo=>{
               :moo=>"moo",
               :doo=>"doo",
-              :"@xsi:type"=>"tns:Boo"
+              :"@xsi:type"=>"ns1:Boo"
             }
           })
       end
@@ -463,8 +463,8 @@ describe WashOut do
 
         expect(savon(:rumba)[:rumba_response]).to eq({
           :rumbas => [
-            {:zombies => "suck1",:puppies => "rock1", :"@xsi:type"=>"tns:Rumbas", :@level => "80"},
-            {:zombies => "suck2", :puppies => "rock2", :"@xsi:type"=>"tns:Rumbas" }
+            {:zombies => "suck1",:puppies => "rock1", :"@xsi:type"=>"ns1:Rumbas", :@level => "80"},
+            {:zombies => "suck2", :puppies => "rock2", :"@xsi:type"=>"ns1:Rumbas" }
           ]
         })
       end
@@ -485,18 +485,18 @@ describe WashOut do
             {
               :rumbas => {
                 :zombies => "100000",
-                :"@xsi:type" => "tns:Rumbas",
+                :"@xsi:type" => "ns1:Rumbas",
                 :"@level" => "80"
               },
-              :"@xsi:type" => "tns:Value"
+              :"@xsi:type" => "ns1:Value"
             },
             {
               :rumbas => {
                 :zombies => "2",
-                :"@xsi:type" => "tns:Rumbas",
+                :"@xsi:type" => "ns1:Rumbas",
                 :@level => "90",
               },
-              :"@xsi:type"=>"tns:Value"
+              :"@xsi:type"=>"ns1:Value"
             }
           ]
         })
@@ -577,27 +577,27 @@ describe WashOut do
 
         request = <<-XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
           <env:Header>
-              <tns:Auth>
+              <ns1:Auth>
                 <value>12345</value>
-              </tns:Auth>
+              </ns1:Auth>
           </env:Header>
           <env:Body>
-            <tns:answer>
+            <ns1:answer>
               <value>42</value>
-            </tns:answer>
+            </ns1:answer>
           </env:Body>
           </env:Envelope>
         XML
 
         expect(HTTPI.post("http://app/route/api/action", request).body).to eq <<-XML
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false">
   <soap:Body>
-    <tns:answerResponse>
+    <ns1:answerResponse>
       <Value xsi:type="xsd:int">42</Value>
-    </tns:answerResponse>
+    </ns1:answerResponse>
   </soap:Body>
 </soap:Envelope>
         XML
@@ -614,14 +614,14 @@ describe WashOut do
 
         request = <<-XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
           <env:Header>
             <value>12345</value>
           </env:Header>
           <env:Body>
-            <tns:answer>
+            <ns1:answer>
               <value>42</value>
-            </tns:answer>
+            </ns1:answer>
           </env:Body>
           </env:Envelope>
         XML
@@ -641,16 +641,16 @@ describe WashOut do
 
         request = <<-XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
           <env:Header>
             <Auth>
               <AnswerResponse>12345</AnswerResponse>
             </Auth>
           </env:Header>
           <env:Body>
-            <tns:answer>
+            <ns1:answer>
               <value>42</value>
-            </tns:answer>
+            </ns1:answer>
           </env:Body>
           </env:Envelope>
         XML
@@ -670,27 +670,27 @@ describe WashOut do
 
         request = <<-XML
           <?xml version="1.0" encoding="UTF-8"?>
-          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+          <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
           <env:Body>
-            <tns:answer>
+            <ns1:answer>
               <value>42</value>
-            </tns:answer>
+            </ns1:answer>
           </env:Body>
           </env:Envelope>
         XML
 
         expect(HTTPI.post("http://app/route/api/action", request).body).to eq <<-XML
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false">
   <soap:Header>
-    <tns:answerResponse>
+    <ns1:answerResponse>
       <Value xsi:type="xsd:string">12345</Value>
-    </tns:answerResponse>
+    </ns1:answerResponse>
   </soap:Header>
   <soap:Body>
-    <tns:answerResponse>
+    <ns1:answerResponse>
       <Value xsi:type="xsd:int">42</Value>
-    </tns:answerResponse>
+    </ns1:answerResponse>
   </soap:Body>
 </soap:Envelope>
         XML
@@ -708,27 +708,27 @@ describe WashOut do
 
       request = <<-XML
         <?xml version="1.0" encoding="UTF-8"?>
-        <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
+        <env:Envelope xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false" xmlns:env="http://schemas.xmlsoap.org/soap/envelope/">
         <env:Body>
-          <tns:answer>
+          <ns1:answer>
             <value>42</value>
-          </tns:answer>
+          </ns1:answer>
         </env:Body>
         </env:Envelope>
       XML
 
       expect(HTTPI.post("http://app/route/api/action", request).body).to eq <<-XML
 <?xml version="1.0" encoding="UTF-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tns="false">
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="false">
   <soap:Header>
-    <tns:answerResponse>
+    <ns1:answerResponse>
       <Auth xsi:type="xsd:string">12345</Auth>
-    </tns:answerResponse>
+    </ns1:answerResponse>
   </soap:Header>
   <soap:Body>
-    <tns:answerResponse>
+    <ns1:answerResponse>
       <Value xsi:type="xsd:int">42</Value>
-    </tns:answerResponse>
+    </ns1:answerResponse>
   </soap:Body>
 </soap:Envelope>
         XML
