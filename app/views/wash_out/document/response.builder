@@ -1,8 +1,8 @@
 xml.instruct!
 xml.tag! "soap:Envelope", "xmlns:soap" => 'http://schemas.xmlsoap.org/soap/envelope/',
                           "xmlns:xsd" => 'http://www.w3.org/2001/XMLSchema',
-                          "xmlns:ns1" => "http://schemas.datacontract.org/2004/07/",
-                          "xmlns:ns2" => @namespace do
+                          "xmlns:ns1" => @ns1,
+                          "xmlns:ns2" => @ns2 do
   if !header.nil?
     xml.tag! "soap:Header" do
       xml.tag! "ns2:#{@action_spec[:response_tag]}" do

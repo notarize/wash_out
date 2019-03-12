@@ -6,7 +6,8 @@ module WashOut
     extend Forwardable
     DEFAULT_CONFIG = {
       parser: :rexml,
-      namespace: 'urn:WashOut',
+      ns1: 'http://schemas.datacontract.org/2004/07/',
+      ns2: 'http://tempuri.org/',
       wsdl_style: 'rpc',
       snakecase_input: false,
       camelize_wsdl: false,

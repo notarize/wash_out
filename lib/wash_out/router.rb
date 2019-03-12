@@ -63,8 +63,8 @@ module WashOut
       # RUBY18 1.8 does not have force_encoding.
       soap_action.force_encoding('UTF-8') if soap_action.respond_to? :force_encoding
 
-      if controller.soap_config.namespace
-        namespace = Regexp.escape controller.soap_config.namespace.to_s
+      if controller.soap_config.ns2
+        namespace = Regexp.escape controller.soap_config.ns2.to_s
         soap_action.gsub!(/^(#{namespace}(\/|#)?)?([^"]*)$/, '\3')
       end
 

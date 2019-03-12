@@ -78,7 +78,8 @@ module WashOut
     # This action generates the WSDL for defined SOAP methods.
     def _generate_wsdl
       @map          = self.class.soap_actions
-      @namespace    = soap_config.namespace
+      @ns1          = soap_config.ns1
+      @ns2          = soap_config.ns2
       @name         = controller_path
       @service_name = soap_config.service_name
 
@@ -88,7 +89,8 @@ module WashOut
 
     # Render a SOAP response.
     def _render_soap(result, options)
-      @namespace   = soap_config.namespace
+      @ns1         = soap_config.ns1
+      @ns2         = soap_config.ns2
       @operation   = soap_action = request.env['wash_out.soap_action']
       @action_spec = self.class.soap_actions[soap_action]
 
