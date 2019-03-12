@@ -47,6 +47,8 @@ module WashOut
       data = data[key]
       data = [data] if @multiplied && !data.is_a?(Array)
 
+      puts "Parameter name: #{@name} key: #{key} struct: #{struct?} multiplied: #{@multiplied} data: #{data.inspect}"
+
       if struct?
         data ||= {}
         if @multiplied
