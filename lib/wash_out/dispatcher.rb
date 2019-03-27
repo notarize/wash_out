@@ -174,8 +174,8 @@ module WashOut
     #
     # Rails do not support sequental rescue_from handling, that is, rescuing an
     # exception from a rescue_from handler. Hence this function is a public API.
-    def render_soap_error(message, code=nil)
-      render :template => "wash_out/#{soap_config.wsdl_style}/error", :status => 500,
+    def render_soap_error(message, code=nil, status_code=nil)
+      render :template => "wash_out/#{soap_config.wsdl_style}/error", :status => status_code || 500,
              :layout => false,
              :locals => { :error_message => message, :error_code => (code || 'Server') },
              :content_type => 'text/xml'
