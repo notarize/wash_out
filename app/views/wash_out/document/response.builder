@@ -1,16 +1,15 @@
 xml.instruct!
-xml.tag! "soap:Envelope", "xmlns:soap" => 'http://schemas.xmlsoap.org/soap/envelope/',
-                          "xmlns:xsd" => 'http://www.w3.org/2001/XMLSchema',
-                          "xmlns:ns1" => @ns1,
-                          "xmlns:ns2" => @ns2 do
+xml.tag! "SOAP-ENV:Envelope", "xmlns:SOAP-ENV" => 'http://schemas.xmlsoap.org/soap/envelope/',
+                              "xmlns:ns1" => @ns1,
+                              "xmlns:ns2" => @ns2 do
   if !header.nil?
-    xml.tag! "soap:Header" do
+    xml.tag! "SOAP-ENV::Header" do
       xml.tag! "ns2:#{@action_spec[:response_tag]}" do
         wsdl_data xml, header
       end
     end
   end
-  xml.tag! "soap:Body" do
+  xml.tag! "SOAP-ENV:Body" do
     xml.tag! "ns2:#{@action_spec[:response_tag]}" do
       wsdl_data xml, result
     end
