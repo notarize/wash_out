@@ -152,7 +152,7 @@ module WashOut
                                       : nil,
                :result => inject.call(result, @action_spec[:out])
              },
-             :content_type => 'text/xml'
+             :content_type => 'text/xml; charset=utf-8'
     end
 
     # This action is a fallback for all undefined SOAP actions.
@@ -178,7 +178,7 @@ module WashOut
       render :template => "wash_out/#{soap_config.wsdl_style}/error", :status => status_code || 500,
              :layout => false,
              :locals => { :error_message => message, :error_code => (code || 'Server') },
-             :content_type => 'text/xml'
+             :content_type => 'text/xml; charset=utf-8'
     end
 
     def soap_request
